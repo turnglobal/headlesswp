@@ -1,0 +1,24 @@
+<article class="group">
+  <a href="/{{slug}}/" class="block" aria-label="Read {{title}}">
+    <div class="aspect-[1.5] overflow-hidden rounded-2xl surface-muted mb-5 border border-gray-200 dark:border-zinc-800">
+      {{#if featuredImage}}
+        <img src="{{featuredImage.url}}" alt="{{featuredImage.alt}}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+      {{/if}}
+    </div>
+    <div class="space-y-2.5 px-0.5">
+      <div class="flex items-center gap-2 text-[12px] text-muted">
+        <span>{{publishedAtFormatted}}</span>
+        <span>/</span>
+        <a href="/author/{{author.slug}}" class="hover:text-primary transition-colors">{{author.name}}</a>
+        <span>/</span>
+        {{#if categories.length}}
+          <a href="/categories/{{categories.0.slug}}" class="hover:text-primary transition-colors">{{primaryCategoryName}}</a>
+        {{else}}
+          <span>{{primaryCategoryName}}</span>
+        {{/if}}
+      </div>
+      <h4 class="text-[1.08rem] font-bold leading-snug group-hover:text-primary transition-colors">{{title}}</h4>
+      <p class="text-[0.95rem] text-muted leading-7">{{excerptText160}}</p>
+    </div>
+  </a>
+</article>

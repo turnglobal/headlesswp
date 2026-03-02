@@ -1,0 +1,233 @@
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<nav id="smart-nav" aria-label="Primary" class="fixed top-0 z-[100] w-full backdrop-blur-md border-b border-gray-200 dark:border-zinc-800">
+  <div id="header-inner" class="max-w-7xl mx-auto px-6 h-[90px] transition-all duration-300 flex items-center justify-between gap-4">
+    <div class="shrink-0">
+      <a href="/" class="hover:text-primary transition-colors py-2 inline-flex items-center" aria-label="{{theme.siteName}}">
+        {{#if theme.logoPath}}
+          <img src="{{theme.logoPath}}" alt="{{theme.siteName}}" class="h-9 w-auto object-contain" />
+        {{else}}
+          <span class="text-[1.125rem] font-black leading-tight inline-block">{{theme.siteName}}</span>
+        {{/if}}
+      </a>
+    </div>
+
+    <div class="hidden md:flex flex-1 justify-center px-4">
+      {{> search inputClass="w-52 lg:w-64"}}
+    </div>
+
+    <div class="shrink-0">
+      <div class="hidden md:flex items-center space-x-5 text-sm text-muted">
+        <a href="/" class="hover:text-primary transition-colors py-2">Home</a>
+        <a href="/articles" class="hover:text-primary transition-colors py-2">Articles</a>
+        {{#if hasCategories}}
+          <a href="/categories" class="hover:text-primary transition-colors py-2">Categories</a>
+        {{/if}}
+        {{#if hasContactPage}}
+          <a href="/contact" class="hover:text-primary transition-colors py-2">Contact</a>
+        {{/if}}
+
+        <div class="flex items-center surface-muted rounded-full p-0.5 border border-gray-200 dark:border-gray-700" aria-label="Theme mode switcher">
+          <button data-theme-toggle="light" class="h-7 w-7 rounded-full transition-all inline-flex items-center justify-center" aria-label="Light mode">
+            {{{icons.sun}}}
+          </button>
+          <button data-theme-toggle="dark" class="h-7 w-7 rounded-full transition-all inline-flex items-center justify-center" aria-label="Dark mode">
+            {{{icons.moon}}}
+          </button>
+        </div>
+      </div>
+
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="md:hidden h-11 w-11 rounded-md border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-700 dark:text-gray-200"
+      >
+        {{{icons.menu}}}
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="md:hidden hidden">
+    <div class="max-w-7xl mx-auto px-6 py-4 space-y-4">
+      {{> search inputClass="w-full"}}
+
+      <div class="flex flex-col space-y-1.5 text-[15px] text-muted">
+        <a href="/" class="hover:text-primary transition-colors py-2">Home</a>
+        <a href="/articles" class="hover:text-primary transition-colors py-2">Articles</a>
+        {{#if hasCategories}}
+          <a href="/categories" class="hover:text-primary transition-colors py-2">Categories</a>
+        {{/if}}
+        {{#if hasContactPage}}
+          <a href="/contact" class="hover:text-primary transition-colors py-2">Contact</a>
+        {{/if}}
+      </div>
+
+      <div class="flex items-center justify-between pt-3">
+        <span class="text-sm text-muted">Theme</span>
+        <div class="flex items-center surface-muted rounded-full p-0.5 border border-gray-200 dark:border-gray-700">
+          <button data-theme-toggle="light" class="px-2.5 py-1.5 rounded-full text-[12px] transition-all inline-flex items-center gap-1" aria-label="Light mode">
+            {{{icons.sun}}}
+            <span>Light</span>
+          </button>
+          <button data-theme-toggle="dark" class="px-2.5 py-1.5 rounded-full text-[12px] transition-all inline-flex items-center gap-1" aria-label="Dark mode">
+            {{{icons.moon}}}
+            <span>Dark</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="h-[90px]"></div>
+
+<script nonce="{{cspNonce}}">
+  (function () {
+    var themeStorageKey = "theme-override";
+    var root = document.documentElement;
+    var nav = document.getElementById("smart-nav");
+    var headerInner = document.getElementById("header-inner");
+    var mobileToggle = document.getElementById("mobile-menu-toggle");
+    var mobileMenu = document.getElementById("mobile-menu");
+    var themeButtons = Array.prototype.slice.call(document.querySelectorAll("[data-theme-toggle]"));
+    var colorSchemeMedia = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+    var prefersReducedMotion = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
+    var lastScrollTop = 0;
+
+    function updateThemeButtons(theme) {
+      themeButtons.forEach(function (button) {
+        var isActive = button.getAttribute("data-theme-toggle") === theme;
+        button.classList.toggle("bg-white", isActive && theme === "light");
+        button.classList.toggle("text-black", isActive && theme === "light");
+        button.classList.toggle("bg-black", isActive && theme === "dark");
+        button.classList.toggle("text-white", isActive && theme === "dark");
+        button.classList.toggle("border", isActive);
+        button.classList.toggle("border-black", isActive && theme === "light");
+        button.classList.toggle("border-white", isActive && theme === "dark");
+      });
+    }
+
+    function applyTheme(theme, persistManual) {
+      var resolved = theme === "dark" ? "dark" : "light";
+      root.classList.toggle("dark", resolved === "dark");
+      if (persistManual) {
+        try {
+          sessionStorage.setItem(themeStorageKey, resolved);
+        } catch (_err) {
+          // no-op if storage is unavailable
+        }
+      }
+      updateThemeButtons(resolved);
+    }
+
+    function getSavedThemeOverride() {
+      try {
+        var saved = sessionStorage.getItem(themeStorageKey);
+        return saved === "dark" || saved === "light" ? saved : null;
+      } catch (_err) {
+        return null;
+      }
+    }
+
+    function getAutoTheme() {
+      return colorSchemeMedia && colorSchemeMedia.matches ? "dark" : "light";
+    }
+
+    themeButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        applyTheme(button.getAttribute("data-theme-toggle") === "dark" ? "dark" : "light", true);
+      });
+    });
+
+    applyTheme(getSavedThemeOverride() || getAutoTheme(), false);
+
+    if (colorSchemeMedia) {
+      var onSystemModeChange = function () {
+        if (!getSavedThemeOverride()) {
+          applyTheme(getAutoTheme(), false);
+        }
+      };
+      if (typeof colorSchemeMedia.addEventListener === "function") {
+        colorSchemeMedia.addEventListener("change", onSystemModeChange);
+      } else if (typeof colorSchemeMedia.addListener === "function") {
+        colorSchemeMedia.addListener(onSystemModeChange);
+      }
+    }
+
+    function closeMobileMenu() {
+      if (!mobileMenu || !mobileToggle) {
+        return;
+      }
+      mobileMenu.classList.add("hidden");
+      mobileToggle.setAttribute("aria-expanded", "false");
+    }
+
+    function toggleMobileMenu() {
+      if (!mobileMenu || !mobileToggle) {
+        return;
+      }
+      var isHidden = mobileMenu.classList.contains("hidden");
+      if (isHidden) {
+        mobileMenu.classList.remove("hidden");
+        mobileToggle.setAttribute("aria-expanded", "true");
+      } else {
+        closeMobileMenu();
+      }
+    }
+
+    if (mobileToggle) {
+      mobileToggle.addEventListener("click", toggleMobileMenu);
+    }
+
+    if (mobileMenu) {
+      Array.prototype.slice.call(mobileMenu.querySelectorAll("a")).forEach(function (link) {
+        link.addEventListener("click", closeMobileMenu);
+      });
+    }
+
+    window.addEventListener("resize", function () {
+      if (window.innerWidth >= 768) {
+        closeMobileMenu();
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeMobileMenu();
+      }
+    });
+
+    window.addEventListener("scroll", function () {
+      if (!nav) {
+        return;
+      }
+      if (mobileMenu && !mobileMenu.classList.contains("hidden")) {
+        return;
+      }
+      if (prefersReducedMotion && prefersReducedMotion.matches) {
+        return;
+      }
+
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (headerInner) {
+        if (scrollTop > 10) {
+          headerInner.classList.remove("h-[90px]");
+          headerInner.classList.add("h-[60px]");
+        } else {
+          headerInner.classList.remove("h-[60px]");
+          headerInner.classList.add("h-[90px]");
+        }
+      }
+
+      if (scrollTop > lastScrollTop && scrollTop > 90) {
+        nav.classList.add("header-hidden");
+      } else {
+        nav.classList.remove("header-hidden");
+      }
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+  })();
+</script>

@@ -1,0 +1,19 @@
+<footer class="py-10 md:py-12 px-6 mt-8" style="background: var(--bg-base); color: var(--text-muted);">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+    <div class="text-[13px] text-muted">
+      &copy; {{currentYear}} <span style="color: var(--text-strong);">{{theme.siteName}}</span>. All rights reserved.
+    </div>
+
+    <div class="flex items-center gap-6 text-[13px] text-muted">
+      {{#if hasAboutPage}}
+        <a href="/about" class="hover:text-primary transition-colors py-1">About</a>
+      {{/if}}
+      {{#if hasPrivacyPolicyPage}}
+        <a href="/privacy-policy" class="hover:text-primary transition-colors py-1">Privacy Policy</a>
+      {{/if}}
+      {{#if hasContactPage}}
+        <a href="/contact" class="hover:text-primary transition-colors py-1">Contact</a>
+      {{/if}}
+    </div>
+  </div>
+</footer>
