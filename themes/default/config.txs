@@ -1,0 +1,35 @@
+{
+  // Global behavior settings
+  "settings": {
+    // Optional site title fallback if WP site name is unavailable
+    // "siteName": "my-site",
+
+    // Optional brand logo path from /public (for header brand)
+    // example: put file at public/logo.png and set "/logo.png"
+    // "logoPath": "/logo.png",
+
+    // Optional favicon path from /public
+    // if omitted and logoPath is set, logoPath is used as favicon too
+    // "faviconPath": "/favicon.png",
+    
+    // TOC open state on post pages
+    "tocDefaultOpen": true,
+
+    // Content paragraph alignment: "justify" or "left"
+    "contentAlign": "justify",
+    
+    // Document direction: "ltr" or "rtl"
+    "direction": "ltr"
+  },
+
+  // Theme style tokens
+  "styles": {
+    "primaryColor": "#f97316",
+    "linkColor": "#0f766e",
+    "darkBackground": "#0a0a0a",
+    "lightBackground": "#ffffff",
+    "textColor": "#111827",
+    "mutedTextColor": "#6b7280",
+    "borderColor": "#e5e7eb"
+  }
+}

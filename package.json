@@ -3,21 +3,34 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "npm run build:assets",
     "dev": "next dev",
+    "prebuild": "npm run build:assets",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:assets": "npm run build:styles && npm run build:vendor",
+    "build:styles": "tailwindcss -i ./src/styles/tailwind-input.css -o ./public/assets/tailwind.css --minify",
+    "build:vendor": "node ./scripts/copy-vendor-assets.mjs",
+    "dev:styles": "tailwindcss -i ./src/styles/tailwind-input.css -o ./public/assets/tailwind.css --watch",
+    "devs": "npm run dev"
   },
   "dependencies": {
+    "handlebars": "^4.7.8",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-icons": "^5.5.0",
+    "sanitize-html": "^2.17.1",
+    "swiper": "^12.1.2"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.2.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/sanitize-html": "^2.16.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",

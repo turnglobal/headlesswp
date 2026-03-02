@@ -1,0 +1,8 @@
+{{> header}}
+<main id="main-content" class="max-w-4xl mx-auto px-6 py-14 md:py-20" tabindex="-1">
+  <h1 class="text-3xl md:text-4xl mb-8 leading-tight">{{page.title}}</h1>
+  <article class="content-flow max-w-none text-[1rem] leading-8 text-muted [&_p]:mb-5 [&_h1]:text-3xl [&_h2]:text-[1.7rem] [&_h2]:mt-10 [&_h2]:mb-4 [&_h3]:text-[1.35rem] [&_h3]:mt-8 [&_h3]:mb-3 [&_ul]:list-disc [&_ol]:list-decimal [&_a]:text-primary">
+    {{{page.contentHtml}}}
+  </article>
+</main>
+{{> footer}}

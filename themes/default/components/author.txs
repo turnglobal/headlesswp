@@ -1,0 +1,1 @@
+<span class="text-[13px] text-muted">By {{author.name}}</span>

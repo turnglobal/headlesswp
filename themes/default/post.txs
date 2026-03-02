@@ -1,0 +1,92 @@
+{{> header}}
+<main id="main-content" class="max-w-4xl mx-auto px-6 py-14 md:py-20" tabindex="-1">
+  <h1 class="text-3xl md:text-4xl font-bold leading-tight mb-4">{{post.title}}</h1>
+  <div class="mb-8 text-sm leading-7 text-muted flex flex-wrap items-center gap-y-2">
+    <span>{{post.publishedAtFormatted}}</span>
+    <span class="px-2.5 text-gray-400">/</span>
+    <a href="/author/{{post.author.slug}}" class="hover:text-primary transition-colors">{{post.author.name}}</a>
+    <span class="px-2.5 text-gray-400">/</span>
+    {{#if post.categories.length}}
+      <a href="/categories/{{post.categories.0.slug}}" class="hover:text-primary transition-colors">{{post.primaryCategoryName}}</a>
+    {{else}}
+      <span>{{post.primaryCategoryName}}</span>
+    {{/if}}
+  </div>
+  {{#if post.featuredImage}}
+    <div class="aspect-[2.1] overflow-hidden surface-muted my-8 border border-gray-200 dark:border-zinc-800">
+      <img src="{{post.featuredImage.url}}" alt="{{post.featuredImage.alt}}" class="w-full h-full object-cover" />
+    </div>
+  {{/if}}
+  <article class="content-flow max-w-none text-[1rem] leading-8 text-muted [&_p]:mb-5 [&_h1]:text-3xl [&_h2]:text-[1.7rem] [&_h2]:mt-10 [&_h2]:mb-4 [&_h3]:text-[1.35rem] [&_h3]:mt-8 [&_h3]:mb-3 [&_ul]:list-disc [&_ol]:list-decimal [&_a]:text-primary">
+    {{{postLeadHtml}}}
+
+    {{#if tocItems.length}}
+      <details class="my-7 rounded-2xl line-soft surface-muted p-4 md:p-5" {{#if theme.tocDefaultOpen}}open{{/if}}>
+        <summary class="cursor-pointer select-none text-[0.95rem] font-semibold list-none flex items-center justify-between gap-3">
+          <span>Table of Contents</span>
+          <span class="toc-chevron text-muted" aria-hidden="true">{{{icons.chevronDown}}}</span>
+        </summary>
+        <nav aria-label="Table of contents" class="mt-3">
+          <ol class="space-y-2 text-sm text-muted">
+            {{#each tocItems}}
+              <li>
+                <a href="#{{id}}" class="hover:text-primary transition-colors">{{title}}</a>
+                {{#if children.length}}
+                  <ol class="mt-1 pl-4 space-y-1 text-[13px] line-soft-left">
+                    {{#each children}}
+                      <li>
+                        <a href="#{{id}}" class="hover:text-primary transition-colors">{{title}}</a>
+                      </li>
+                    {{/each}}
+                  </ol>
+                {{/if}}
+              </li>
+            {{/each}}
+          </ol>
+        </nav>
+      </details>
+    {{/if}}
+
+    {{{postRemainingHtml}}}
+  </article>
+
+  <section class="mt-10 pt-6 border-t border-gray-200 dark:border-zinc-800" aria-label="Share this article">
+    <h2 class="text-sm font-bold text-muted mb-3">Share</h2>
+    <div class="flex flex-wrap gap-2.5">
+      {{#each shareLinks}}
+        <a
+          href="{{href}}"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-200 dark:border-zinc-700 text-[12px] hover:text-primary transition-colors"
+          {{#if external}}target="_blank" rel="noopener noreferrer"{{/if}}
+          aria-label="Share on {{label}}"
+        >
+          <span aria-hidden="true">{{{icon}}}</span>
+          <span>{{label}}</span>
+        </a>
+      {{/each}}
+    </div>
+  </section>
+
+  {{#if postMetaTags.length}}
+    <section class="mt-10 pt-6 border-t border-gray-200 dark:border-zinc-800" aria-label="Post tags">
+      <h2 class="text-sm font-bold text-muted mb-3">Tags</h2>
+      <div class="flex flex-wrap gap-2">
+        {{#each postMetaTags}}
+          <a href="/tag/{{slug}}" class="px-3 py-1.5 rounded-full border border-gray-200 dark:border-zinc-700 text-[12px] hover:text-primary transition-colors">
+            {{name}}
+          </a>
+        {{/each}}
+      </div>
+    </section>
+  {{/if}}
+</main>
+
+<section class="max-w-7xl mx-auto px-6 pb-16 md:pb-20" aria-label="Related posts">
+  <h3 class="text-lg font-bold text-muted mb-6">Related</h3>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {{#each relatedPosts}}
+      {{> related-post}}
+    {{/each}}
+  </div>
+</section>
+{{> footer}}

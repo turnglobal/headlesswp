@@ -1,0 +1,74 @@
+{{> header}}
+
+{{#if heroPosts.length}}
+  <section class="py-[80px] overflow-hidden">
+    <div class="swiper mySwiper overflow-visible">
+      <div class="swiper-wrapper">
+        {{#each heroPosts}}
+          <div class="swiper-slide cursor-pointer">
+            <a href="/{{slug}}/" class="block relative aspect-[21/9] rounded-[2rem] overflow-hidden bg-zinc-900 shadow-xl">
+              {{#if featuredImage}}
+                <img src="{{featuredImage.url}}" alt="{{featuredImage.alt}}" class="w-full h-full object-cover" />
+              {{/if}}
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent p-6 md:p-10 flex flex-col justify-end">
+                <span class="text-primary text-[13px] mb-2">{{primaryCategoryName}} • {{author.name}}</span>
+                <h2 class="text-white text-2xl md:text-4xl max-w-3xl leading-tight">{{title}}</h2>
+              </div>
+            </a>
+          </div>
+        {{/each}}
+      </div>
+      <div class="swiper-pagination !static mt-8 md:mt-10"></div>
+    </div>
+  </section>
+{{/if}}
+
+<main id="main-content" class="max-w-7xl mx-auto px-6 py-[80px]" tabindex="-1">
+  <div class="space-y-8 md:space-y-10" id="latest-writing">
+    <h3 class="text-sm font-semibold text-muted">Latest</h3>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 lg:gap-x-10 gap-y-12 md:gap-y-16">
+      {{#each latestStories}}
+        {{> post-card}}
+      {{/each}}
+    </div>
+
+    {{#if pagination.hasPagination}}
+      <nav aria-label="Pagination" class="pt-2">
+        <div class="flex flex-wrap items-center gap-2">
+          {{#each pagination.pages}}
+            <a
+              href="{{href}}"
+              aria-current="{{#if isCurrent}}page{{/if}}"
+              class="min-w-10 h-10 px-3 inline-flex items-center justify-center rounded-md border border-gray-200 dark:border-zinc-700 transition-colors {{#if isCurrent}}bg-black text-white dark:bg-white dark:text-black{{else}}text-muted hover:text-primary{{/if}}"
+            >
+              {{number}}
+            </a>
+          {{/each}}
+        </div>
+      </nav>
+    {{/if}}
+  </div>
+</main>
+
+{{> footer}}
+
+<script nonce="{{cspNonce}}" src="/assets/swiper-bundle.min.js"></script>
+<script nonce="{{cspNonce}}">
+  (function () {
+    if (typeof Swiper !== "undefined" && document.querySelector(".mySwiper")) {
+      new Swiper(".mySwiper", {
+        slidesPerView: 1.05,
+        centeredSlides: true,
+        spaceBetween: 18,
+        loop: true,
+        autoplay: { delay: 5000, disableOnInteraction: false },
+        pagination: { el: ".swiper-pagination", clickable: true },
+        breakpoints: {
+          768: { slidesPerView: 1.3, spaceBetween: 30 },
+          1280: { slidesPerView: 1.55, spaceBetween: 46 }
+        }
+      });
+    }
+  })();
+</script>

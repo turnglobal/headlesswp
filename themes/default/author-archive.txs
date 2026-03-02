@@ -1,0 +1,31 @@
+{{> header}}
+
+<main id="main-content" class="max-w-7xl mx-auto px-6 py-[80px]" tabindex="-1">
+  <div class="space-y-8 md:space-y-10" id="latest-writing">
+    <h1 class="text-sm font-semibold text-muted">Author: {{author.name}}</h1>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 lg:gap-x-10 gap-y-12 md:gap-y-16">
+      {{#each latestStories}}
+        {{> post-card}}
+      {{/each}}
+    </div>
+
+    {{#if pagination.hasPagination}}
+      <nav aria-label="Pagination" class="pt-2">
+        <div class="flex flex-wrap items-center gap-2">
+          {{#each pagination.pages}}
+            <a
+              href="{{href}}"
+              aria-current="{{#if isCurrent}}page{{/if}}"
+              class="min-w-10 h-10 px-3 inline-flex items-center justify-center rounded-md border border-gray-200 dark:border-zinc-700 transition-colors {{#if isCurrent}}bg-black text-white dark:bg-white dark:text-black{{else}}text-muted hover:text-primary{{/if}}"
+            >
+              {{number}}
+            </a>
+          {{/each}}
+        </div>
+      </nav>
+    {{/if}}
+  </div>
+</main>
+
+{{> footer}}
