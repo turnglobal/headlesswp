@@ -246,3 +246,8 @@ Funded by [Turn Global](https://turn.global)
 If this project helps you, please consider starring and donating for further contributions.
 
 GitHub: [turnglobal/headlesswp](https://github.com/turnglobal/headlesswp)
+
+## License
+
+This project is open source under the GNU GPL v3.0 license.
+See [LICENSE](/Users/user/Documents/turnglobal/public/headlesswp/LICENSE).
