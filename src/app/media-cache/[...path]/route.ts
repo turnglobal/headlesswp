@@ -1,7 +1,7 @@
 import "server-only";
 
 import { NextResponse } from "next/server";
-import { buildEdgeCacheControl, getCacheTtlSeconds } from "@/lib/cache/http-cache";
+import { buildEdgeCacheControl, getMediaCacheTtlSeconds } from "@/lib/cache/http-cache";
 import { getEnv, getWpBasicAuthHeader } from "@/lib/config/env";
 import { getSourceMediaUrlFromRequestPath } from "@/lib/media/cache-url";
 
@@ -9,6 +9,7 @@ export const runtime = "nodejs";
 const MAX_IMAGE_BYTES = 12 * 1024 * 1024;
 
 export async function GET(request: Request): Promise<Response> {
+  const mediaTtlSeconds = getMediaCacheTtlSeconds();
   const requestUrl = new URL(request.url);
   const sourceUrl = getSourceMediaUrlFromRequestPath(requestUrl.pathname, requestUrl.searchParams);
   if (!sourceUrl) {
@@ -36,7 +37,7 @@ export async function GET(request: Request): Promise<Response> {
       headers,
       redirect: "manual",
       next: {
-        revalidate: getCacheTtlSeconds(),
+        revalidate: mediaTtlSeconds,
       },
     });
   } catch {
@@ -75,7 +76,9 @@ export async function GET(request: Request): Promise<Response> {
     status: 200,
     headers: {
       "Content-Type": contentType,
-      "Cache-Control": buildEdgeCacheControl(),
+      "Cache-Control": buildEdgeCacheControl(mediaTtlSeconds),
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
     },
   });
 }

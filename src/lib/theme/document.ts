@@ -184,9 +184,9 @@ main[id="main-content"] {
 </style>`;
 }
 
-export function buildTailwindHeadAssets(cspNonce?: string): string {
+export function buildTailwindHeadAssets(cspNonce?: string, includeSwiperCss: boolean = false): string {
   const nonceAttr = cspNonce ? ` nonce="${escapeHtml(cspNonce)}"` : "";
-  return [
+  const tags = [
     `<script${nonceAttr}>`,
     "(function () {",
     "  try {",
@@ -205,8 +205,13 @@ export function buildTailwindHeadAssets(cspNonce?: string): string {
     "console.info(\"GitHub: https://github.com/turnglobal/headlesswp - If it helps you, please give it a star / donation for more contributions. Make a copy for you.\");",
     "</script>",
     '<link rel="stylesheet" href="/assets/tailwind.css">',
-    '<link rel="stylesheet" href="/assets/swiper-bundle.min.css">',
-  ].join("\n");
+  ];
+
+  if (includeSwiperCss) {
+    tags.push('<link rel="stylesheet" href="/assets/swiper-bundle.min.css">');
+  }
+
+  return tags.join("\n");
 }
 
 export function buildBaseMeta(title: string, description: string, canonicalUrl: string, faviconHref: string): string {
@@ -230,8 +235,9 @@ export function buildHtmlDocument(params: {
   htmlDir?: "ltr" | "rtl";
   faviconHref?: string;
   cspNonce?: string;
+  includeSwiperCss?: boolean;
 }): string {
-  const { title, description, canonicalUrl, headHtml, themeStyleBlock, bodyHtml, htmlDir, faviconHref, cspNonce } = params;
+  const { title, description, canonicalUrl, headHtml, themeStyleBlock, bodyHtml, htmlDir, faviconHref, cspNonce, includeSwiperCss } = params;
   const dir = htmlDir === "rtl" ? "rtl" : "ltr";
   const resolvedFaviconHref = faviconHref && faviconHref.trim() ? faviconHref.trim() : "/favicon.ico";
 
@@ -240,7 +246,7 @@ export function buildHtmlDocument(params: {
 <head>
 ${buildBaseMeta(title, description, canonicalUrl, resolvedFaviconHref)}
 ${themeStyleBlock}
-${buildTailwindHeadAssets(cspNonce)}
+${buildTailwindHeadAssets(cspNonce, includeSwiperCss)}
 ${headHtml}
 </head>
 <body class="bg-white text-black dark:bg-black dark:text-white transition-colors duration-300 font-sans">

@@ -8,7 +8,13 @@
           <div class="swiper-slide cursor-pointer">
             <a href="/{{slug}}/" class="block relative aspect-[21/9] rounded-[2rem] overflow-hidden bg-zinc-900 shadow-xl">
               {{#if featuredImage}}
-                <img src="{{featuredImage.url}}" alt="{{featuredImage.alt}}" class="w-full h-full object-cover" />
+                <img
+                  src="{{featuredImage.url}}"
+                  alt="{{featuredImage.alt}}"
+                  class="w-full h-full object-cover"
+                  {{#if @first}}fetchpriority="high" loading="eager"{{else}}loading="lazy"{{/if}}
+                  decoding="async"
+                />
               {{/if}}
               <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent p-6 md:p-10 flex flex-col justify-end">
                 <span class="text-primary text-[13px] mb-2">{{primaryCategoryName}} • {{author.name}}</span>

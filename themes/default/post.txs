@@ -14,7 +14,7 @@
   </div>
   {{#if post.featuredImage}}
     <div class="aspect-[2.1] overflow-hidden surface-muted my-8 border border-gray-200 dark:border-zinc-800">
-      <img src="{{post.featuredImage.url}}" alt="{{post.featuredImage.alt}}" class="w-full h-full object-cover" />
+      <img src="{{post.featuredImage.url}}" alt="{{post.featuredImage.alt}}" class="w-full h-full object-cover" fetchpriority="high" loading="eager" decoding="async" />
     </div>
   {{/if}}
   <article class="content-flow max-w-none text-[1rem] leading-8 text-muted [&_p]:mb-5 [&_h1]:text-3xl [&_h2]:text-[1.7rem] [&_h2]:mt-10 [&_h2]:mb-4 [&_h3]:text-[1.35rem] [&_h3]:mt-8 [&_h3]:mb-3 [&_ul]:list-disc [&_ol]:list-decimal [&_a]:text-primary">
@@ -30,12 +30,22 @@
           <ol class="space-y-2 text-sm text-muted">
             {{#each tocItems}}
               <li>
-                <a href="#{{id}}" class="hover:text-primary transition-colors">{{title}}</a>
+                <a
+                  href="#{{id}}"
+                  class="inline-flex min-h-11 w-full items-center rounded-md px-2 py-2 hover:text-primary transition-colors focus-visible:outline-none"
+                >
+                  {{title}}
+                </a>
                 {{#if children.length}}
                   <ol class="mt-1 pl-4 space-y-1 text-[13px] line-soft-left">
                     {{#each children}}
                       <li>
-                        <a href="#{{id}}" class="hover:text-primary transition-colors">{{title}}</a>
+                        <a
+                          href="#{{id}}"
+                          class="inline-flex min-h-11 w-full items-center rounded-md px-2 py-2 hover:text-primary transition-colors focus-visible:outline-none"
+                        >
+                          {{title}}
+                        </a>
                       </li>
                     {{/each}}
                   </ol>
@@ -73,7 +83,7 @@
       <div class="flex flex-wrap gap-2">
         {{#each postMetaTags}}
           <a href="/tag/{{slug}}" class="px-3 py-1.5 rounded-full border border-gray-200 dark:border-zinc-700 text-[12px] hover:text-primary transition-colors">
-            {{name}}
+            #{{name}}
           </a>
         {{/each}}
       </div>

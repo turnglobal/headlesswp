@@ -59,8 +59,10 @@ Required:
 Optional:
 
 - `THEME` (default: `default`)
-- `CACHE_TTL_SECONDS` (default: `86400`)
+- `CACHE_TTL_SECONDS` (default: `300`)
+- `MEDIA_CACHE_TTL_SECONDS` (default: `604800`)
 - `DOMAIN` (recommended in all environments, required in production)
+- `REVALIDATE_SECRET` (optional but recommended for instant publish refresh)
 
 ### Important: `DOMAIN` in Production
 
@@ -195,6 +197,8 @@ If you need videos, host in YouTube/Vimeo/Facebook and embed in post content.
    - `WP_APP_PASSWORD`
    - `THEME` (optional)
    - `CACHE_TTL_SECONDS` (optional)
+   - `MEDIA_CACHE_TTL_SECONDS` (optional)
+   - `REVALIDATE_SECRET` (recommended)
    - `DOMAIN` (**required in production**)
 4. Add your custom domain in Vercel project settings.
 5. Ensure `DOMAIN` exactly matches the production public domain.
@@ -217,6 +221,18 @@ Action:
 - verify `WP_USERNAME`
 - regenerate `WP_APP_PASSWORD`
 - confirm user permission and REST access
+
+### New posts not showing immediately
+
+This was cache-related. By default, cache TTL is now `300` seconds (5 minutes).
+
+For near-instant updates after publishing, use the revalidate endpoint:
+
+1. Set `REVALIDATE_SECRET` in `.env` and Vercel env vars.
+2. Trigger:
+   - `POST /api/revalidate?secret=YOUR_SECRET`
+   - or send header `x-revalidate-secret: YOUR_SECRET`
+3. Call this from a WordPress publish webhook/plugin to refresh cache immediately.
 
 ### Wrong content/domain behavior
 

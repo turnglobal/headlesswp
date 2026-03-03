@@ -85,6 +85,8 @@ function buildContentSecurityPolicy(nonce: string): string {
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",
+    "trusted-types default",
+    "require-trusted-types-for 'script'",
   ].join("; ");
 }
 
@@ -96,6 +98,8 @@ function buildResponseHeaders(contentType: string, nonce: string): Headers {
     "X-Frame-Options": "DENY",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+    "Cross-Origin-Opener-Policy": "same-origin",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
   });
 }
 
@@ -558,6 +562,7 @@ async function renderHome(pathname: string, publicOrigin: string, requestedPage:
     htmlDir: resolveHtmlDirection(theme),
     faviconHref: resolveFaviconHref(theme),
     cspNonce,
+    includeSwiperCss: true,
   });
 
   return htmlResponse(html, 200, cspNonce);

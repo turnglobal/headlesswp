@@ -34,6 +34,16 @@ function demoteH1ToH2(html: string | undefined): string | undefined {
   return html.replace(/<h1\b/gi, "<h2").replace(/<\/h1>/gi, "</h2>");
 }
 
+function rewriteWpImageSourcesToCache(html: string | undefined): string | undefined {
+  if (!html) return html;
+
+  return html.replace(/<img\b[^>]*\bsrc=(["'])(.*?)\1[^>]*>/gi, (tag, quote: string, src: string) => {
+    const cachedSrc = toCachedMediaUrl(src);
+    if (cachedSrc === src) return tag;
+    return tag.replace(`src=${quote}${src}${quote}`, `src=${quote}${cachedSrc}${quote}`);
+  });
+}
+
 function getFeaturedMedia(post: WpPost | WpPage): WpFeaturedMedia | null {
   return post._embedded?.["wp:featuredmedia"]?.[0] ?? null;
 }
@@ -67,13 +77,16 @@ export function mapWpPostToViewModel(post: WpPost): PostViewModel {
         minute: "2-digit",
       });
 
+  const sanitizedContentHtml = sanitizeWpHtml(post.content?.rendered);
+  const contentHtml = rewriteWpImageSourcesToCache(demoteH1ToH2(sanitizedContentHtml));
+
   return {
     id: post.id,
     slug: post.slug,
     title: stripHtml(post.title.rendered),
     excerptText: toExcerptText(post.excerpt.rendered),
     excerptText160: toExcerptText(post.excerpt.rendered, 160),
-    contentHtml: demoteH1ToH2(sanitizeWpHtml(post.content?.rendered)),
+    contentHtml,
     publishedAt: post.date,
     publishedAtFormatted,
     publishedTimeFormatted,
@@ -97,12 +110,14 @@ export function mapWpPostToViewModel(post: WpPost): PostViewModel {
 }
 
 export function mapWpPageToViewModel(page: WpPage): PageViewModel {
+  const sanitizedContentHtml = sanitizeWpHtml(page.content.rendered);
+
   return {
     id: page.id,
     slug: page.slug,
     title: stripHtml(page.title.rendered),
     excerptText: toExcerptText(page.excerpt?.rendered),
-    contentHtml: sanitizeWpHtml(page.content.rendered),
+    contentHtml: rewriteWpImageSourcesToCache(sanitizedContentHtml),
     publishedAt: page.date,
     link: page.link,
   };

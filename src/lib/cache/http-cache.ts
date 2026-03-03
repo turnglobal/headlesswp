@@ -7,6 +7,10 @@ export function getCacheTtlSeconds(): number {
   return getEnv().CACHE_TTL_SECONDS;
 }
 
+export function getMediaCacheTtlSeconds(): number {
+  return getEnv().MEDIA_CACHE_TTL_SECONDS;
+}
+
 export function getAuthFingerprint(): string {
   const auth = getWpBasicAuthHeader();
   return createHash("sha256").update(auth).digest("hex");
