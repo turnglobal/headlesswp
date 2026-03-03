@@ -14,7 +14,15 @@
   </div>
   {{#if post.featuredImage}}
     <div class="aspect-[2.1] overflow-hidden surface-muted my-8 border border-gray-200 dark:border-zinc-800">
-      <img src="{{post.featuredImage.url}}" alt="{{post.featuredImage.alt}}" class="w-full h-full object-cover" fetchpriority="high" loading="eager" decoding="async" />
+      <img
+        src="{{post.featuredImage.url}}"
+        {{#if post.featuredImage.srcSet}}srcset="{{post.featuredImage.srcSet}}" sizes="(max-width: 1023px) 100vw, 1100px"{{/if}}
+        alt="{{post.featuredImage.alt}}"
+        class="w-full h-full object-cover"
+        fetchpriority="high"
+        loading="eager"
+        decoding="async"
+      />
     </div>
   {{/if}}
   <article class="content-flow max-w-none text-[1rem] leading-8 text-muted [&_p]:mb-5 [&_h1]:text-3xl [&_h2]:text-[1.7rem] [&_h2]:mt-10 [&_h2]:mb-4 [&_h3]:text-[1.35rem] [&_h3]:mt-8 [&_h3]:mb-3 [&_ul]:list-disc [&_ol]:list-decimal [&_a]:text-primary">

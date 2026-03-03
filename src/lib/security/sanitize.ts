@@ -72,7 +72,7 @@ export function sanitizeWpHtml(input: string | undefined): string {
     ],
     allowedAttributes: {
       a: ["href", "name", "target", "rel", "aria-label"],
-      img: ["src", "alt", "title", "width", "height", "loading", "decoding"],
+      img: ["src", "srcset", "sizes", "alt", "title", "width", "height", "loading", "decoding", "fetchpriority"],
       iframe: ["src", "title", "width", "height", "allow", "allowfullscreen", "loading", "referrerpolicy"],
       "*": ["class", "id", "aria-label", "aria-hidden", "role", "dir", "lang"],
     },

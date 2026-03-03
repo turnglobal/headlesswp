@@ -17,6 +17,14 @@ export type WpFeaturedMedia = {
   media_details?: {
     width?: number;
     height?: number;
+    sizes?: Record<
+      string,
+      {
+        source_url?: string;
+        width?: number;
+        height?: number;
+      }
+    >;
   };
   alt_text?: string;
 };
@@ -69,6 +77,7 @@ export type PostViewModel = {
   };
   featuredImage: {
     url: string;
+    srcSet?: string;
     width: number | null;
     height: number | null;
     alt: string;

@@ -10,6 +10,7 @@
               {{#if featuredImage}}
                 <img
                   src="{{featuredImage.url}}"
+                  {{#if featuredImage.srcSet}}srcset="{{featuredImage.srcSet}}" sizes="(max-width: 767px) 100vw, (max-width: 1279px) 85vw, 1200px"{{/if}}
                   alt="{{featuredImage.alt}}"
                   class="w-full h-full object-cover"
                   {{#if @first}}fetchpriority="high" loading="eager"{{else}}loading="lazy"{{/if}}

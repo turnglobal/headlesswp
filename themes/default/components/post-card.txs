@@ -2,7 +2,14 @@
   <a href="/{{slug}}/" class="block" aria-label="Read {{title}}">
     <div class="aspect-[1.5] overflow-hidden rounded-2xl surface-muted mb-5 border border-gray-200 dark:border-zinc-800">
       {{#if featuredImage}}
-        <img src="{{featuredImage.url}}" alt="{{featuredImage.alt}}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
+        <img
+          src="{{featuredImage.url}}"
+          {{#if featuredImage.srcSet}}srcset="{{featuredImage.srcSet}}" sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"{{/if}}
+          alt="{{featuredImage.alt}}"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
+          decoding="async"
+        />
       {{/if}}
     </div>
     <div class="space-y-2.5 px-0.5">

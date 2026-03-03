@@ -1,5 +1,7 @@
 import "server-only";
 
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import type { ThemeTokens } from "@/types/theme";
 
 function escapeHtml(value: string): string {
@@ -10,6 +12,17 @@ function escapeHtml(value: string): string {
     .replace(/\"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+function loadInlineTailwindCss(): string {
+  try {
+    const cssPath = path.join(process.cwd(), "public", "assets", "tailwind.css");
+    return readFileSync(cssPath, "utf8").trim();
+  } catch {
+    return "";
+  }
+}
+
+const INLINE_TAILWIND_CSS = loadInlineTailwindCss();
 
 export function buildThemeStyleBlock(theme: ThemeTokens): string {
   const resolvedContentAlign = theme.contentAlign === "left" ? "left" : "justify";
@@ -204,10 +217,18 @@ export function buildTailwindHeadAssets(cspNonce?: string, includeSwiperCss: boo
     "console.info(\"This is an open source project created by Chandima Galahitiyawa, funded by Turn Global.\");",
     "console.info(\"GitHub: https://github.com/turnglobal/headlesswp - If it helps you, please give it a star / donation for more contributions. Make a copy for you.\");",
     "</script>",
-    '<link rel="stylesheet" href="/assets/tailwind.css">',
   ];
 
+  if (INLINE_TAILWIND_CSS) {
+    tags.push(`<style${nonceAttr}>${INLINE_TAILWIND_CSS}</style>`);
+  } else {
+    tags.push('<link rel="preload" href="/assets/tailwind.css" as="style">');
+    tags.push('<link rel="stylesheet" href="/assets/tailwind.css" media="print" onload="this.media=\'all\'">');
+    tags.push('<noscript><link rel="stylesheet" href="/assets/tailwind.css"></noscript>');
+  }
+
   if (includeSwiperCss) {
+    tags.push('<link rel="preload" href="/assets/swiper-bundle.min.css" as="style">');
     tags.push('<link rel="stylesheet" href="/assets/swiper-bundle.min.css">');
   }
 

@@ -1,6 +1,6 @@
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <nav id="smart-nav" aria-label="Primary" class="fixed top-0 z-[100] w-full backdrop-blur-md border-b border-gray-200 dark:border-zinc-800">
-  <div id="header-inner" class="max-w-7xl mx-auto px-6 h-[90px] transition-all duration-300 flex items-center justify-between gap-4">
+  <div id="header-inner" class="max-w-7xl mx-auto px-6 h-[90px] transition-colors duration-300 flex items-center justify-between gap-4">
     <div class="shrink-0">
       <a href="/" class="hover:text-primary transition-colors py-2 inline-flex items-center" aria-label="{{theme.siteName}}">
         {{#if theme.logoPath}}
@@ -211,16 +211,6 @@
       }
 
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-      if (headerInner) {
-        if (scrollTop > 10) {
-          headerInner.classList.remove("h-[90px]");
-          headerInner.classList.add("h-[60px]");
-        } else {
-          headerInner.classList.remove("h-[60px]");
-          headerInner.classList.add("h-[90px]");
-        }
-      }
 
       if (scrollTop > lastScrollTop && scrollTop > 90) {
         nav.classList.add("header-hidden");

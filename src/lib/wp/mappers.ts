@@ -53,6 +53,34 @@ function getTerms(post: WpPost): { categories: WpTerm[]; tags: WpTerm[] } {
   };
 }
 
+function buildFeaturedImageSrcSet(featured: WpFeaturedMedia): string | undefined {
+  const candidates: Array<{ url: string; width: number }> = [];
+  const sizes = featured.media_details?.sizes ?? {};
+
+  for (const value of Object.values(sizes)) {
+    if (!value?.source_url || !value.width || value.width <= 0) continue;
+    candidates.push({ url: toCachedMediaUrl(value.source_url), width: value.width });
+  }
+
+  if (featured.source_url && featured.media_details?.width && featured.media_details.width > 0) {
+    candidates.push({ url: toCachedMediaUrl(featured.source_url), width: featured.media_details.width });
+  }
+
+  if (candidates.length < 2) return undefined;
+
+  const deduped = new Map<number, string>();
+  for (const candidate of candidates) {
+    if (!deduped.has(candidate.width)) {
+      deduped.set(candidate.width, candidate.url);
+    }
+  }
+
+  return Array.from(deduped.entries())
+    .sort((a, b) => a[0] - b[0])
+    .map(([width, url]) => `${url} ${width}w`)
+    .join(", ");
+}
+
 export function mapWpPostToViewModel(post: WpPost): PostViewModel {
   const featured = getFeaturedMedia(post);
   const author = post._embedded?.author?.[0];
@@ -94,6 +122,7 @@ export function mapWpPostToViewModel(post: WpPost): PostViewModel {
     featuredImage: featured?.source_url
       ? {
           url: toCachedMediaUrl(featured.source_url),
+          srcSet: buildFeaturedImageSrcSet(featured),
           width: featured.media_details?.width ?? null,
           height: featured.media_details?.height ?? null,
           alt: featured.alt_text ?? stripHtml(post.title.rendered),
