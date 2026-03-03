@@ -230,15 +230,14 @@ Action:
 
 ### New posts not showing immediately
 
-This was cache-related. By default, cache TTL is now `300` seconds (5 minutes).
+This is cache-related.
 
-For near-instant updates after publishing, use the revalidate endpoint:
+Simple method:
 
-1. Set `REVALIDATE_SECRET` in `.env` and Vercel env vars.
-2. Trigger:
-   - `POST /api/revalidate?secret=YOUR_SECRET`
-   - or send header `x-revalidate-secret: YOUR_SECRET`
-3. Call this from a WordPress publish webhook/plugin to refresh cache immediately.
+1. Set `CACHE_TTL_SECONDS=60` in `.env` and Vercel env vars.
+2. Wait until the new posts appear.
+3. Change `CACHE_TTL_SECONDS` back to `300` (or your preferred value).
+4. Redeploy.
 
 ### Wrong content/domain behavior
 
