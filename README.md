@@ -178,6 +178,12 @@ Rules:
 
 If you need videos, host in YouTube/Vimeo/Facebook and embed in post content.
 
+Recommended image optimization for best Lighthouse/Core Web Vitals:
+
+- use `WebP` format when possible
+- use around `80%` quality
+- keep max image width around `1000px` for article/card images (unless a larger size is truly needed)
+
 ## Security Highlights
 
 - WordPress credentials are server-only
