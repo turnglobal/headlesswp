@@ -46,7 +46,7 @@ function assertAuthorized(request: Request): NextResponse | null {
 
 function runRevalidation(): NextResponse {
   const tag = `wp:${getAuthFingerprint()}`;
-  revalidateTag(tag);
+  revalidateTag(tag, "max");
 
   return NextResponse.json({
     ok: true,

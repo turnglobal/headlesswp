@@ -27,16 +27,11 @@ function toExcerptText(html: string | undefined, maxLength: number = 180): strin
   return `${plain.slice(0, maxLength).trimEnd()}...`;
 }
 
-function demoteH1ToH2(html: string | undefined): string | undefined {
-  if (!html) {
-    return html;
-  }
+function demoteH1ToH2(html: string): string {
   return html.replace(/<h1\b/gi, "<h2").replace(/<\/h1>/gi, "</h2>");
 }
 
-function rewriteWpImageSourcesToCache(html: string | undefined): string | undefined {
-  if (!html) return html;
-
+function rewriteWpImageSourcesToCache(html: string): string {
   return html.replace(/<img\b[^>]*\bsrc=(["'])(.*?)\1[^>]*>/gi, (tag, quote: string, src: string) => {
     const cachedSrc = toCachedMediaUrl(src);
     if (cachedSrc === src) return tag;
