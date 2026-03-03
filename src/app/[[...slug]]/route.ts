@@ -77,7 +77,7 @@ function buildContentSecurityPolicy(nonce: string): string {
   const nonceToken = `'nonce-${nonce}'`;
   return [
     "default-src 'self'",
-    `script-src 'self' ${nonceToken}`,
+    `script-src 'self' 'unsafe-inline' ${nonceToken}`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https:",
     "font-src 'self' data:",
