@@ -6,9 +6,11 @@ WordPress runs as the content backend (for example `https://wp.example.com`) and
 
 This is an open-source project. If it helps you, contribute to core and share new themes. It is built to be SEO + GEO friendly, with strong Core Web Vitals focus and smooth UX.
 
-<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F4443085892578909&width=500&show_text=false&height=281&appId" width="500" height="281" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
+[![Sinhala video guide](https://i.imgur.com/ORLlOcj.jpeg)](https://www.facebook.com/reel/4443085892578909)
 
-Small note: this video guide is in Sinhala. We hope to upload a YouTube version soon with English subtitles (or a full English video).
+Full video link: [https://www.facebook.com/reel/4443085892578909](https://www.facebook.com/reel/4443085892578909)
+
+Small note: this guide is currently in Sinhala. We hope to upload a YouTube version soon with English subtitles (or a full English video).
 
 ## Quick Start
 
